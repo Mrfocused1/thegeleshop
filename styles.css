@@ -2273,10 +2273,33 @@ body.drawer-open { overflow: hidden; }
 .post-embed {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   margin: 36px auto 48px;
   max-width: 400px;
 }
+.post-embed-frame {
+  position: relative;
+  max-height: 540px;
+  overflow: hidden;
+  transition: max-height .5s ease;
+}
+.post-embed.is-expanded .post-embed-frame {
+  max-height: 2000px;
+}
+.post-embed-frame::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 50px;
+  background: linear-gradient(180deg, rgba(242, 237, 226, 0) 0%, var(--cream) 100%);
+  pointer-events: none;
+  transition: opacity .3s ease;
+  opacity: 1;
+}
+.post-embed.is-expanded .post-embed-frame::after { opacity: 0; }
+
 .post-embed blockquote.instagram-media,
 .post-embed iframe.instagram-media {
   width: 100% !important;
@@ -2284,6 +2307,24 @@ body.drawer-open { overflow: hidden; }
   max-width: 400px !important;
   margin: 0 auto !important;
 }
+
+.caption-toggle {
+  align-self: center;
+  margin-top: 14px;
+  background: transparent;
+  border: 1px solid #1a1a1a;
+  color: #1a1a1a;
+  font-size: 11px;
+  letter-spacing: .22em;
+  padding: 9px 22px;
+  cursor: pointer;
+  font-family: var(--sans);
+  border-radius: 999px;
+  transition: background .15s ease, color .15s ease;
+}
+.caption-toggle:hover { background: #1a1a1a; color: #fff; }
+.caption-toggle .chev { transition: transform .25s ease; display: inline-block; margin-left: 4px; font-size: 9px; }
+.post-embed.is-expanded .caption-toggle .chev { transform: rotate(180deg); }
 .post-credit {
   font-size: 12px;
   color: #5a554a;

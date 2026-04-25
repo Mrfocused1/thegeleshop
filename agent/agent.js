@@ -200,9 +200,12 @@ const postHtml = `<!DOCTYPE html>
   </div>
 
   <div class="post-embed">
-    <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="${escapeHtml(next.ig_url)}" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);">
-      <a href="${escapeHtml(next.ig_url)}" style="background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank" rel="noopener">View this post on Instagram</a>
-    </blockquote>
+    <div class="post-embed-frame">
+      <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="${escapeHtml(next.ig_url)}" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);">
+        <a href="${escapeHtml(next.ig_url)}" style="background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank" rel="noopener">View this post on Instagram</a>
+      </blockquote>
+    </div>
+    <button class="caption-toggle" type="button" aria-expanded="false">SHOW CAPTION <span class="chev">▾</span></button>
     <p class="post-credit">${escapeHtml(draft.credit_line)}</p>
   </div>
 
@@ -217,6 +220,16 @@ const postHtml = `<!DOCTYPE html>
 
 <script async src="//www.instagram.com/embed.js"></script>
 <script src="../menu.js"></script>
+<script>
+  document.querySelectorAll('.caption-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const embed = btn.closest('.post-embed');
+      const expanded = embed.classList.toggle('is-expanded');
+      btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      btn.firstChild.textContent = expanded ? 'HIDE CAPTION ' : 'SHOW CAPTION ';
+    });
+  });
+</script>
 </body>
 </html>
 `;
