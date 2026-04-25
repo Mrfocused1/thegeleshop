@@ -2338,12 +2338,16 @@ body.drawer-open { overflow: hidden; }
   margin: 0;
 }
 .post-hero {
-  margin: 28px 0 20px;
+  margin: 28px auto 20px;
+  max-width: 540px;
 }
 .post-hero img {
   display: block;
   width: 100%;
   height: auto;
+  max-height: 620px;
+  object-fit: cover;
+  object-position: center top;
   border-radius: 2px;
 }
 .post-hero figcaption {
