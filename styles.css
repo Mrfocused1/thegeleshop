@@ -2790,7 +2790,7 @@ body.drawer-open { overflow: hidden; }
   font-weight: 300;
   color: var(--gold);
   transition: transform .2s ease;
-  font-family: var(--body-sans);
+  font-family: var(--sans);
 }
 .faq-item[open] summary::after {
   content: '\2013';

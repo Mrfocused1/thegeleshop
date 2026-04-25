@@ -145,8 +145,8 @@ function postPage({ slug, tag, title, deck, body_html, ig_url, photographer, her
   <nav class="drawer-nav">
     <a href="../index.html" class="drawer-link">Home</a>
     <a href="../learn.html" class="drawer-link">Learn</a>
-    <a href="../index.html#styles" class="drawer-link">Styles &amp; Origins</a>
-    <a href="../index.html#culture" class="drawer-link">Cultural Significance</a>
+    <a href="../learn.html#tying" class="drawer-link">Styles &amp; Origins</a>
+    <a href="../learn.html#occasions" class="drawer-link">Cultural Significance</a>
     <a href="../blog.html" class="drawer-link active">Blog &amp; Stories</a>
     <a href="../shop.html" class="drawer-link">Shop</a>
     <a href="../contact.html" class="drawer-link">Contact</a>
@@ -220,22 +220,41 @@ function articleCard(s) {
 
 // 0. Generate 1200x630 OG cards from hero images (best-effort; needs ImageMagick)
 import { execSync } from "node:child_process";
+
+let magickAvailable = false;
+try {
+  execSync("magick -version", { stdio: "ignore" });
+  magickAvailable = true;
+} catch {
+  console.warn("⚠  ImageMagick (`magick`) not found on PATH. OG cards will fall back to original hero images.");
+  console.warn("   Install: `brew install imagemagick` (macOS) or apt/brew equivalent.");
+}
+
 function ensureOgCard(heroRel) {
-  if (!heroRel) return false;
+  if (!heroRel) return { skipped: true };
   const src = path.join(ROOT, heroRel);
-  if (!fs.existsSync(src)) return false;
+  if (!fs.existsSync(src)) return { skipped: true, reason: "src missing" };
   const ogRel = heroRel.replace(/\.(jpg|jpeg|png|webp)$/i, "-og.jpg");
   const ogAbs = path.join(ROOT, ogRel);
-  if (fs.existsSync(ogAbs)) return true;
+  if (fs.existsSync(ogAbs)) return { existed: true };
+  if (!magickAvailable) return { skipped: true, reason: "no magick" };
   try {
     execSync(`magick "${src}" -resize 1200x -gravity center -extent 1200x630 -quality 85 "${ogAbs}"`, { stdio: "ignore" });
-    console.log(`  ↳ generated ${ogRel}`);
-    return true;
+    return { generated: true, path: ogRel };
   } catch (e) {
-    return false; // magick missing or failed — postPage falls back to original hero
+    return { failed: true, reason: e.message };
   }
 }
-for (const s of specs) ensureOgCard(s.hero_image);
+
+let ogGenerated = 0, ogExisted = 0, ogFailed = 0, ogSkipped = 0;
+for (const s of specs) {
+  const r = ensureOgCard(s.hero_image);
+  if (r.generated) { ogGenerated++; console.log(`  ↳ generated ${r.path}`); }
+  else if (r.existed) { ogExisted++; }
+  else if (r.failed)  { ogFailed++; console.warn(`  ✗ OG card failed for ${s.slug}: ${r.reason}`); }
+  else                { ogSkipped++; }
+}
+console.log(`OG cards: ${ogGenerated} generated, ${ogExisted} already existed, ${ogFailed} failed, ${ogSkipped} skipped`);
 
 // 1. Write all post pages
 for (const s of specs) {

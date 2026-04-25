@@ -88,44 +88,60 @@ The photographer / credited account: ${next.photographer || "(unattributed — s
 
 Write the JSON response now.`;
 
-const response = await client.messages.create({
-  model: "claude-opus-4-7",
-  max_tokens: 16000,
-  thinking: { type: "adaptive" },
-  output_config: {
-    effort: "high",
-    format: {
-      type: "json_schema",
-      schema: {
-        type: "object",
-        additionalProperties: false,
-        required: ["tag", "title", "deck", "intro_html", "body_html", "closing_html", "credit_line"],
-        properties: {
-          tag: { type: "string", enum: ["HERITAGE", "STYLE", "WEDDINGS", "TUTORIALS", "LOOKBOOKS", "CULTURE"] },
-          title: { type: "string" },
-          deck: { type: "string" },
-          intro_html: { type: "string" },
-          body_html: { type: "string" },
-          closing_html: { type: "string" },
-          credit_line: { type: "string" },
+let response;
+try {
+  response = await client.messages.create({
+    model: "claude-opus-4-7",
+    max_tokens: 16000,
+    thinking: { type: "adaptive" },
+    output_config: {
+      effort: "high",
+      format: {
+        type: "json_schema",
+        schema: {
+          type: "object",
+          additionalProperties: false,
+          required: ["tag", "title", "deck", "intro_html", "body_html", "closing_html", "credit_line"],
+          properties: {
+            tag: { type: "string", enum: ["HERITAGE", "STYLE", "WEDDINGS", "TUTORIALS", "LOOKBOOKS", "CULTURE"] },
+            title: { type: "string" },
+            deck: { type: "string" },
+            intro_html: { type: "string" },
+            body_html: { type: "string" },
+            closing_html: { type: "string" },
+            credit_line: { type: "string" },
+          },
         },
       },
     },
-  },
-  system: [
-    // Cache the brand-voice system prompt across daily runs (5-min default;
-    // doesn't survive day-to-day, but if we ever batch multiple posts it pays off).
-    { type: "text", text: SYSTEM, cache_control: { type: "ephemeral" } },
-  ],
-  messages: [{ role: "user", content: userBrief }],
-});
+    system: [
+      // Cache the brand-voice system prompt across daily runs (5-min default;
+      // doesn't survive day-to-day, but if we ever batch multiple posts it pays off).
+      { type: "text", text: SYSTEM, cache_control: { type: "ephemeral" } },
+    ],
+    messages: [{ role: "user", content: userBrief }],
+  });
+} catch (err) {
+  console.error("Anthropic API call failed:", err?.message || err);
+  if (err?.status) console.error("  HTTP status:", err.status);
+  console.error("  Queue is unchanged — re-run when the API recovers.");
+  process.exit(1);
+}
 
 const textBlock = response.content.find((b) => b.type === "text");
 if (!textBlock) {
   console.error("No text block in response. Raw response:", JSON.stringify(response, null, 2));
   process.exit(1);
 }
-const draft = JSON.parse(textBlock.text);
+
+let draft;
+try {
+  draft = JSON.parse(textBlock.text);
+} catch (err) {
+  console.error("Model returned non-JSON output:", err.message);
+  console.error("Raw text:", textBlock.text.slice(0, 500));
+  process.exit(1);
+}
 
 console.log(`Drafted: "${draft.title}" [${draft.tag}]`);
 
@@ -261,8 +277,8 @@ const postHtml = `<!DOCTYPE html>
   <nav class="drawer-nav">
     <a href="../index.html" class="drawer-link">Home</a>
     <a href="../learn.html" class="drawer-link">Learn</a>
-    <a href="../index.html#styles" class="drawer-link">Styles &amp; Origins</a>
-    <a href="../index.html#culture" class="drawer-link">Cultural Significance</a>
+    <a href="../learn.html#tying" class="drawer-link">Styles &amp; Origins</a>
+    <a href="../learn.html#occasions" class="drawer-link">Cultural Significance</a>
     <a href="../blog.html" class="drawer-link active">Blog &amp; Stories</a>
     <a href="../shop.html" class="drawer-link">Shop</a>
     <a href="../contact.html" class="drawer-link">Contact</a>
@@ -388,7 +404,9 @@ saveJson(QUEUE, remainingQueue);
 published.unshift({
   ...next,
   title: draft.title,
+  deck: draft.deck,
   tag: draft.tag,
+  is_classic: !!next.is_classic,
   slug,
   published_at: new Date().toISOString(),
 });
