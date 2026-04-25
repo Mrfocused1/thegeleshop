@@ -2347,7 +2347,10 @@ body.drawer-open { overflow: hidden; }
   height: auto;
   max-height: 620px;
   object-fit: cover;
-  object-position: center top;
+  /* Default focal point: middle of the frame. Wedding portraits typically
+     have subjects centered, so cropping equally from top and bottom keeps
+     them visible. Override per-image with inline style if needed. */
+  object-position: center center;
   border-radius: 2px;
 }
 .post-hero figcaption {
