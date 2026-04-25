@@ -55,6 +55,7 @@ for (let i = 0; i < remaining.length; i++) {
     ig_url: c.ig_url,
     photographer: c.photographer,
     theme,
+    thumbnail: c.thumbnail || null,
     added_at: new Date().toISOString().slice(0, 10),
   });
   queuedCount++;

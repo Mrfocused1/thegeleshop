@@ -228,19 +228,26 @@ console.log("Wrote post:", path.relative(ROOT, postPath));
 
 const blogHtml = fs.readFileSync(BLOG_FILE, "utf8");
 
-// Make sure embed.js is loaded on the blog index too (idempotent).
+// Blog index uses thumbnail images only — embed.js is loaded only on
+// individual post detail pages (which already include it in their template).
 let updatedBlog = blogHtml;
-if (!updatedBlog.includes("instagram.com/embed.js")) {
-  updatedBlog = updatedBlog.replace(
-    `<script src="menu.js"></script>`,
-    `<script async src="//www.instagram.com/embed.js"></script>\n<script src="menu.js"></script>`
-  );
-}
+
+// Pick a thumbnail. If the queued entry carries an IG displayUrl from
+// discover.js, use it (hotlinks IG CDN). Otherwise fall back to a tag-keyed
+// stock image already in the repo.
+const fallbackByTag = {
+  HERITAGE:  "gele-velvet-blue.png",
+  STYLE:     "gele-pink.png",
+  WEDDINGS:  "gele-red.png",
+  TUTORIALS: "gele-pink.png",
+  LOOKBOOKS: "gele-emerald-queen.png",
+  CULTURE:   "gele-golden-opulence.png",
+};
+const thumbnail = next.thumbnail || fallbackByTag[draft.tag] || "gele.png";
+const thumbnailIsRemote = thumbnail.startsWith("http");
 
 const newCard = `    <article class="article-card">
-      <a href="posts/${postFilename}" class="article-img article-img-embed">
-        <blockquote class="instagram-media" data-instgrm-permalink="${next.ig_url}" data-instgrm-version="14" style="background:#FFF; border:0; max-width:540px; width:100%; margin:0;"><a href="${next.ig_url}" target="_blank" rel="noopener">View on Instagram</a></blockquote>
-      </a>
+      <a href="posts/${postFilename}" class="article-img"><img src="${escapeHtml(thumbnail)}" alt="${escapeHtml(draft.title)}"${thumbnailIsRemote ? ' loading="lazy" referrerpolicy="no-referrer"' : ""}></a>
       <span class="blog-tag">${escapeHtml(draft.tag)}</span>
       <h3><a href="posts/${postFilename}">${escapeHtml(draft.title)}</a></h3>
       <p>${escapeHtml(draft.deck)}</p>
