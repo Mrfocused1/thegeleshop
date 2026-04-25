@@ -145,8 +145,10 @@ function postPage({ slug, tag, title, deck, body_html, ig_url, photographer, her
   <nav class="drawer-nav">
     <a href="../index.html" class="drawer-link">Home</a>
     <a href="../learn.html" class="drawer-link">Learn</a>
-    <a href="../learn.html#tying" class="drawer-link">Styles &amp; Origins</a>
-    <a href="../learn.html#occasions" class="drawer-link">Cultural Significance</a>
+    <a href="../history.html" class="drawer-link">History</a>
+    <a href="../styles.html" class="drawer-link">Styles &amp; Tying</a>
+    <a href="../traditions.html" class="drawer-link">African Traditions</a>
+    <a href="../glossary.html" class="drawer-link">Glossary</a>
     <a href="../blog.html" class="drawer-link active">Blog &amp; Stories</a>
     <a href="../shop.html" class="drawer-link">Shop</a>
     <a href="../contact.html" class="drawer-link">Contact</a>
