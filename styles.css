@@ -2270,6 +2270,26 @@ body.drawer-open { overflow: hidden; }
   color: #7a7466;
   margin: 0;
 }
+.post-hero {
+  margin: 28px 0 20px;
+}
+.post-hero img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 2px;
+}
+.post-hero figcaption {
+  font-size: 12px;
+  color: #5a554a;
+  letter-spacing: .04em;
+  font-style: italic;
+  margin-top: 10px;
+  text-align: center;
+}
+.post-hero figcaption a { color: #1a1a1a; border-bottom: 1px solid #c8be9f; }
+.post-hero figcaption a:hover { color: var(--gold); border-bottom-color: var(--gold); }
+
 .post-embed {
   display: flex;
   flex-direction: column;
