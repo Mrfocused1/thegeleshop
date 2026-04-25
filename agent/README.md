@@ -1,6 +1,6 @@
 # The Gele Shop — Daily Blog Agent
 
-A daily agent that turns curated **Instagram features** (publicly posted Nigerian wedding photography) into **original** editorial blog posts on `thegeleshop.com`.
+A daily agent that turns curated **Instagram features** (publicly posted Nigerian wedding photography) into **original** editorial blog posts on `www.thegele.shop`.
 
 ## What it does, day to day
 

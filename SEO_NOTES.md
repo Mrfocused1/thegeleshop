@@ -34,11 +34,11 @@
 ## 🔴 Things you must change before launch
 
 ### 1. Replace placeholder domain
-Every page uses `https://thegeleshop.com/` as the canonical/OG URL. If your real domain is different, do a project-wide find/replace. From the project root:
+Every page uses `https://www.thegele.shop/` as the canonical/OG URL. If your real domain is different, do a project-wide find/replace. From the project root:
 
 ```bash
 cd /Users/paulbridges/Desktop/zariya
-grep -rl "thegeleshop.com" *.html sitemap.xml robots.txt | \
+grep -rl "www.thegele.shop" *.html sitemap.xml robots.txt | \
   xargs sed -i '' 's|thegeleshop\.com|YOUR-REAL-DOMAIN.com|g'
 ```
 
@@ -46,7 +46,7 @@ grep -rl "thegeleshop.com" *.html sitemap.xml robots.txt | \
 The social `sameAs` URLs use `instagram.com/thegeleshop`, etc. Update them to your actual handles in `index.html` and `contact.html`. Same find/replace approach.
 
 ### 3. Real contact details
-In `contact.html` JSON-LD: `telephone: "+2348012345678"` and `email: "hello@thegeleshop.com"` are placeholders. Replace with real ones — Google de-ranks businesses whose schema phone/email don't match the page body.
+In `contact.html` JSON-LD: `telephone: "+2348012345678"` and `email: "hello@thegele.shop"` are placeholders. Replace with real ones — Google de-ranks businesses whose schema phone/email don't match the page body.
 
 ### 4. Apple touch icon
 I made `favicon.svg` (a clean black-on-cream "G" wordmark). For iOS home-screen shortcuts you need a 180×180 PNG at `apple-touch-icon.png`. Easiest path:
