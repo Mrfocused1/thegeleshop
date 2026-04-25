@@ -248,14 +248,14 @@ let updatedBlog = blogHtml;
 // Pick a thumbnail. Priority: locally-saved hero image (from enrich.js) →
 // hotlinked IG CDN URL → tag-keyed fallback in repo.
 const fallbackByTag = {
-  HERITAGE:  "gele-velvet-blue.png",
-  STYLE:     "gele-pink.png",
-  WEDDINGS:  "gele-red.png",
-  TUTORIALS: "gele-pink.png",
-  LOOKBOOKS: "gele-emerald-queen.png",
-  CULTURE:   "gele-golden-opulence.png",
+  HERITAGE:  "gele-velvet-blue.webp",
+  STYLE:     "gele-pink.webp",
+  WEDDINGS:  "gele-red.webp",
+  TUTORIALS: "gele-pink.webp",
+  LOOKBOOKS: "gele-emerald-queen.webp",
+  CULTURE:   "gele-golden-opulence.webp",
 };
-const thumbnail = next.hero_image || next.thumbnail || fallbackByTag[draft.tag] || "gele.png";
+const thumbnail = next.hero_image || next.thumbnail || fallbackByTag[draft.tag] || "gele.webp";
 const thumbnailIsRemote = thumbnail.startsWith("http");
 
 const newCard = `    <article class="article-card">

@@ -124,7 +124,7 @@ button { font-family: inherit; cursor: pointer; border: 0; background: none; }
 .hero {
   position: relative;
   background:
-    url('hero-bg-arch.png') center right / cover no-repeat,
+    url('hero-bg-arch.webp') center right / cover no-repeat,
     linear-gradient(180deg, #ece5d2 0%, #e9e1cd 100%);
   padding: 24px 60px 16px;
   display: grid;
@@ -1910,7 +1910,7 @@ body.drawer-open { overflow: hidden; }
 .shop-cta {
   background:
     linear-gradient(180deg, rgba(242, 237, 226, 0) 0%, rgba(242, 237, 226, 1) 100%),
-    url('hero-bg-arch.png') center / cover no-repeat;
+    url('hero-bg-arch.webp') center / cover no-repeat;
   background-color: var(--cream);
   padding: 100px 60px 110px;
   text-align: center;
@@ -2067,7 +2067,7 @@ body.drawer-open { overflow: hidden; }
 /* ---------- Contact page hero ---------- */
 .hero-contact {
   background:
-    url('hero-bg-pink.png') center right / cover no-repeat,
+    url('hero-bg-pink.webp') center right / cover no-repeat,
     linear-gradient(180deg, #f1dede 0%, #e9d2d2 100%);
 }
 .hero-contact .hero-mannequin {
