@@ -245,9 +245,8 @@ const blogHtml = fs.readFileSync(BLOG_FILE, "utf8");
 // individual post detail pages (which already include it in their template).
 let updatedBlog = blogHtml;
 
-// Pick a thumbnail. If the queued entry carries an IG displayUrl from
-// discover.js, use it (hotlinks IG CDN). Otherwise fall back to a tag-keyed
-// stock image already in the repo.
+// Pick a thumbnail. Priority: locally-saved hero image (from enrich.js) →
+// hotlinked IG CDN URL → tag-keyed fallback in repo.
 const fallbackByTag = {
   HERITAGE:  "gele-velvet-blue.png",
   STYLE:     "gele-pink.png",
@@ -256,7 +255,7 @@ const fallbackByTag = {
   LOOKBOOKS: "gele-emerald-queen.png",
   CULTURE:   "gele-golden-opulence.png",
 };
-const thumbnail = next.thumbnail || fallbackByTag[draft.tag] || "gele.png";
+const thumbnail = next.hero_image || next.thumbnail || fallbackByTag[draft.tag] || "gele.png";
 const thumbnailIsRemote = thumbnail.startsWith("http");
 
 const newCard = `    <article class="article-card">
