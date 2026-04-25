@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  macOS launchd job — runs the blog agent once a day at 09:00 local time.
+
+  Install:
+    1. Edit the two paths below if your project lives somewhere other than
+       /Users/paulbridges/Desktop/zariya/agent
+    2. Set ANTHROPIC_API_KEY in the EnvironmentVariables block (or replace
+       this block with a reference to a launchctl setenv call).
+    3. cp com.thegeleshop.blog-agent.plist ~/Library/LaunchAgents/
+       launchctl load ~/Library/LaunchAgents/com.thegeleshop.blog-agent.plist
+    4. To run once on demand:  launchctl start com.thegeleshop.blog-agent
+    5. To stop:  launchctl unload ~/Library/LaunchAgents/com.thegeleshop.blog-agent.plist
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.thegeleshop.blog-agent</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/local/bin/node</string>
+    <string>/Users/paulbridges/Desktop/zariya/agent/agent.js</string>
+  </array>
+
+  <key>WorkingDirectory</key>
+  <string>/Users/paulbridges/Desktop/zariya/agent</string>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>ANTHROPIC_API_KEY</key>
+    <string>SET_THIS_BEFORE_LOADING_THE_PLIST</string>
+  </dict>
+
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key>
+    <integer>9</integer>
+    <key>Minute</key>
+    <integer>0</integer>
+  </dict>
+
+  <key>StandardOutPath</key>
+  <string>/Users/paulbridges/Desktop/zariya/agent/agent.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/paulbridges/Desktop/zariya/agent/agent.error.log</string>
+</dict>
+</plist>

@@ -1,0 +1,14 @@
+{
+  "name": "thegeleshop-blog-agent",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Daily agent that drafts original blog posts framing curated Instagram features.",
+  "scripts": {
+    "agent": "node agent.js",
+    "add": "node add.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.40.0"
+  }
+}

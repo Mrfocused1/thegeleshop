@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Don't index the agent's private workspace
+Disallow: /agent/
+Disallow: /preview-*.png
+Disallow: /preview-*.html
+Disallow: /screenshot.js
+
+Sitemap: https://thegeleshop.com/sitemap.xml

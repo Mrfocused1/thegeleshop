@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Agent runtime / logs
+agent.log
+agent.error.log
+
+# Dev preview screenshots (kept locally, not pushed)
+preview.png
+preview-*.png
+preview-*.html
+preview-no-svg-*.png
+preview-finder-*.png
+
+# OS / editor
+.DS_Store
+*.swp
+*~
+
+# Env files (never commit secrets)
+.env
+.env.local
+.env.*.local
+
+# Local caches
+.cache/
+
+# Optional published-posts state — tracked locally, not in repo
+agent/published.json
+agent/agent.log
