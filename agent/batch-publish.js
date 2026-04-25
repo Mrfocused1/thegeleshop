@@ -204,25 +204,48 @@ if (classicSpecs.length) {
   blogHtml = blogHtml.slice(0, lineEnd) + classicCards + blogHtml.slice(lineEnd);
 }
 
-// Auto-update Featured Story hero with the most recent classic, if any
-const latestClassic = [...specs, ...published].find((p) => p.is_classic);
-if (latestClassic) {
+// Auto-update Featured Story hero (collage: 1 main + 3 side)
+const allPosts = [...specs, ...published];
+const main = allPosts.find((p) => p.is_classic) || allPosts[0];
+if (main) {
+  // Pick 3 side cards: prefer variety (mix classic + recent), excluding the main
+  const others = allPosts.filter((p) => p.slug !== main.slug);
+  const side = others.slice(0, 3);
+
+  const tagDisplay = (p) => p.is_classic ? `CLASSIC · ${p.tag}` : p.tag;
+  const tagClass = (p) => p.is_classic ? "blog-tag classic-tag" : "blog-tag";
+
+  const sideCards = side.map((p) => `
+    <a href="posts/${p.slug}.html" class="side-card">
+      <div class="side-card-img"><img src="${p.hero_image}" alt="${escHtml(p.title)}"></div>
+      <div class="side-card-text">
+        <span class="${tagClass(p)}">${escHtml(tagDisplay(p))}</span>
+        <h3>${escHtml(p.title)}</h3>
+      </div>
+    </a>`).join("\n");
+
   const heroBlock = `<!-- Featured Story hero -->
 <section class="featured-hero" id="featured-hero">
-  <a href="posts/${latestClassic.slug}.html" class="featured-hero-img">
-    <img src="${latestClassic.hero_image}" alt="${escHtml(latestClassic.title)}" />
+  <a href="posts/${main.slug}.html" class="featured-hero-main">
+    <div class="featured-hero-img">
+      <img src="${main.hero_image}" alt="${escHtml(main.title)}" />
+    </div>
+    <div class="featured-hero-text">
+      <p class="eyebrow gold-eyebrow">FEATURED STORY</p>
+      <span class="${tagClass(main)}">${escHtml(tagDisplay(main))}</span>
+      <h1>${escHtml(main.title)}</h1>
+      <p class="featured-hero-deck">${escHtml(main.deck || "")}</p>
+      <p class="featured-hero-meta">By The Gele Shop · ${formatDate(new Date())} · 7 min read</p>
+    </div>
   </a>
-  <div class="featured-hero-text">
-    <p class="eyebrow gold-eyebrow">FEATURED STORY · THE JOURNAL</p>
-    <span class="blog-tag classic-tag">CLASSIC · ${escHtml(latestClassic.tag)}</span>
-    <h1>${escHtml(latestClassic.title)}</h1>
-    <p class="featured-hero-deck">${escHtml(latestClassic.deck || "")}</p>
-    <p class="featured-hero-meta">By The Gele Shop · ${formatDate(new Date())} · 7 min read</p>
-    <a href="posts/${latestClassic.slug}.html" class="btn-primary">READ THE STORY <i class="fa-solid fa-arrow-right"></i></a>
+
+  <div class="featured-hero-side">
+    <p class="eyebrow gold-eyebrow side-eyebrow">ALSO IN THE JOURNAL</p>
+${sideCards}
   </div>
 </section>`;
   blogHtml = blogHtml.replace(/<!-- Featured Story hero -->[\s\S]*?<\/section>/, heroBlock);
-  console.log(`✓ Featured hero refreshed → ${latestClassic.title}`);
+  console.log(`✓ Featured hero refreshed → main: "${main.title}" + 3 side`);
 }
 
 fs.writeFileSync(BLOG, blogHtml);
