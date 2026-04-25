@@ -2238,6 +2238,73 @@ body.drawer-open { overflow: hidden; }
 }
 .sub-form-light input::placeholder { color: #7a7466; }
 
+/* ---------- Archive / Classics row on blog index ---------- */
+.archive-strip {
+  background: #1a1612;
+  color: #e6dfcc;
+  padding: 60px 60px 70px;
+  border-top: 1px solid #2a2520;
+}
+.archive-head {
+  max-width: 1320px;
+  margin: 0 auto 32px;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+.archive-head h2 {
+  font-family: var(--hero-serif);
+  font-weight: 500;
+  font-size: clamp(28px, 2.8vw, 40px);
+  line-height: 1.1;
+  margin: 0;
+  color: #f6efdb;
+}
+.archive-head h2 em { font-style: italic; color: var(--gold-soft); }
+.archive-head .eyebrow { color: var(--gold) !important; margin: 0 0 8px; }
+.archive-head .view-all { color: #d9d2ba; font-size: 11px; letter-spacing: .26em; border-bottom: 1px solid #d9d2ba; padding-bottom: 4px; }
+.archive-head .view-all:hover { color: var(--gold); border-bottom-color: var(--gold); }
+.archive-grid {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+.archive-grid .article-card {
+  background: rgba(246, 239, 219, .04);
+  padding: 12px;
+  border-radius: 2px;
+  transition: background .2s ease;
+}
+.archive-grid .article-card:hover { background: rgba(246, 239, 219, .08); }
+.archive-grid .article-card h3 a { color: #f6efdb; }
+.archive-grid .article-card h3 a:hover { color: var(--gold-soft); }
+.archive-grid .article-card p { color: #b0a98f; }
+.archive-grid .article-meta { color: #8a8579; }
+
+/* Classic tag — gold-on-cream pill */
+.classic-tag {
+  background: rgba(184, 148, 74, .15);
+  color: var(--gold);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+.archive-grid .classic-tag {
+  background: rgba(184, 148, 74, .2);
+  color: var(--gold-soft);
+}
+
+@media (max-width: 1100px) {
+  .archive-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 540px) {
+  .archive-grid { grid-template-columns: 1fr; }
+  .archive-strip { padding: 50px 24px; }
+}
+
 /* ---------- Generated post pages ---------- */
 .post-article {
   max-width: 760px;
