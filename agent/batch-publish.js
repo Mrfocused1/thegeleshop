@@ -27,10 +27,22 @@ function escHtml(s) {
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
+function wordCountFromHtml(html) {
+  const text = String(html || "").replace(/<[^>]+>/g, " ");
+  return (text.match(/\b\w+\b/g) || []).length;
+}
+
 function postPage({ slug, tag, title, deck, body_html, ig_url, photographer, hero_image, credit_line, is_classic }) {
   const tagDisplay = is_classic ? `CLASSIC · ${tag}` : tag;
   const heroSrc = hero_image.startsWith("posts/") ? hero_image.replace(/^posts\//, "") : hero_image;
-  const ogImage = `https://www.thegele.shop/${hero_image}`;
+  // Prefer the 1200x630 OG card if present alongside the hero (created by ensureOgCard below)
+  const ogPath = hero_image.replace(/\.(jpg|jpeg|png|webp)$/i, "-og.jpg");
+  const ogPathFs = path.join(ROOT, ogPath);
+  const ogImage = fs.existsSync(ogPathFs)
+    ? `https://www.thegele.shop/${ogPath}`
+    : `https://www.thegele.shop/${hero_image}`;
+  const wordCount = wordCountFromHtml(body_html);
+  const articleSection = (tag || "Weddings").charAt(0).toUpperCase() + (tag || "Weddings").slice(1).toLowerCase();
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +50,7 @@ function postPage({ slug, tag, title, deck, body_html, ig_url, photographer, her
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>${escHtml(title)} — The Gele Shop</title>
 <meta name="description" content="${escHtml(deck)}" />
-<meta name="author" content="The Gele Shop" />
+<meta name="author" content="Adaeze Okonkwo, Editor — The Gele Shop" />
 <meta name="robots" content="index, follow, max-image-preview:large" />
 <link rel="canonical" href="https://www.thegele.shop/posts/${slug}.html" />
 
@@ -66,14 +78,39 @@ function postPage({ slug, tag, title, deck, body_html, ig_url, photographer, her
   "description": ${JSON.stringify(deck)},
   "image": "${ogImage}",
   "datePublished": "${today}",
-  "author": { "@type": "Organization", "name": "The Gele Shop" },
+  "dateModified": "${today}",
+  "wordCount": ${wordCount},
+  "articleSection": "${articleSection}",
+  "author": {
+    "@type": "Person",
+    "name": "Adaeze Okonkwo",
+    "jobTitle": "Editor",
+    "url": "https://www.thegele.shop/about.html",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "The Gele Shop",
+      "url": "https://www.thegele.shop/"
+    }
+  },
   "publisher": {
     "@type": "Organization",
     "name": "The Gele Shop",
     "logo": { "@type": "ImageObject", "url": "https://www.thegele.shop/favicon.svg" }
   },
   "mainEntityOfPage": "https://www.thegele.shop/posts/${slug}.html",
-  "inLanguage": "en-GB"
+  "inLanguage": "en-GB",
+  "isAccessibleForFree": true
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thegele.shop/" },
+    { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.thegele.shop/blog.html" },
+    { "@type": "ListItem", "position": 3, "name": ${JSON.stringify(title)}, "item": "https://www.thegele.shop/posts/${slug}.html" }
+  ]
 }
 </script>
 
@@ -121,11 +158,11 @@ function postPage({ slug, tag, title, deck, body_html, ig_url, photographer, her
     <span class="blog-tag${is_classic ? " classic-tag" : ""}">${escHtml(tagDisplay)}</span>
     <h1>${escHtml(title)}</h1>
     <p class="post-deck">${escHtml(deck)}</p>
-    <p class="post-meta">By The Gele Shop · ${formatDate(new Date())}</p>
+    <p class="post-meta">By <a href="/about.html" rel="author">Adaeze Okonkwo, Editor</a> · ${formatDate(new Date())}</p>
   </div>
 
   <figure class="post-hero">
-    <img src="${escHtml(heroSrc)}" alt="${escHtml(title)}" />
+    <img src="${escHtml(heroSrc)}" alt="${escHtml(title)} — ${escHtml(deck)}" width="1080" height="1440" fetchpriority="high" decoding="async" />
     <figcaption>Featured on <a href="https://www.instagram.com/${photographer.replace(/^@/, "")}/" target="_blank" rel="noopener">${escHtml(photographer)}</a></figcaption>
   </figure>
 
@@ -142,6 +179,11 @@ function postPage({ slug, tag, title, deck, body_html, ig_url, photographer, her
   <div class="post-body">
 ${body_html}
   </div>
+
+  <aside class="post-related" aria-label="Continue reading">
+    <p class="post-related-eyebrow">CONTINUE READING</p>
+    <p class="post-related-pillar">For the deeper context, read our complete guide — <a href="../learn.html">What Is a Gele?</a> — or browse the <a href="../blog.html">full journal</a>.</p>
+  </aside>
 
   <p class="post-back"><a href="../blog.html" class="link-arrow"><i class="fa-solid fa-arrow-left"></i> Back to all stories</a></p>
 </article>
@@ -175,6 +217,25 @@ function articleCard(s) {
     </article>
 `;
 }
+
+// 0. Generate 1200x630 OG cards from hero images (best-effort; needs ImageMagick)
+import { execSync } from "node:child_process";
+function ensureOgCard(heroRel) {
+  if (!heroRel) return false;
+  const src = path.join(ROOT, heroRel);
+  if (!fs.existsSync(src)) return false;
+  const ogRel = heroRel.replace(/\.(jpg|jpeg|png|webp)$/i, "-og.jpg");
+  const ogAbs = path.join(ROOT, ogRel);
+  if (fs.existsSync(ogAbs)) return true;
+  try {
+    execSync(`magick "${src}" -resize 1200x -gravity center -extent 1200x630 -quality 85 "${ogAbs}"`, { stdio: "ignore" });
+    console.log(`  ↳ generated ${ogRel}`);
+    return true;
+  } catch (e) {
+    return false; // magick missing or failed — postPage falls back to original hero
+  }
+}
+for (const s of specs) ensureOgCard(s.hero_image);
 
 // 1. Write all post pages
 for (const s of specs) {
@@ -269,5 +330,24 @@ for (const s of specs.slice().reverse()) {
 }
 fs.writeFileSync(PUBLISHED, JSON.stringify(published, null, 2));
 console.log(`✓ published.json — now ${published.length} posts`);
+
+// 4. Append new post URLs to sitemap.xml
+const SITEMAP = path.join(ROOT, "sitemap.xml");
+if (fs.existsSync(SITEMAP)) {
+  let sitemap = fs.readFileSync(SITEMAP, "utf8");
+  let added = 0;
+  const newEntries = [];
+  for (const s of specs) {
+    const url = `https://www.thegele.shop/posts/${s.slug}.html`;
+    if (sitemap.includes(url)) continue;
+    newEntries.push(`  <url>\n    <loc>${url}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>yearly</changefreq>\n    <priority>0.7</priority>\n  </url>`);
+    added++;
+  }
+  if (added > 0) {
+    sitemap = sitemap.replace("</urlset>", newEntries.join("\n") + "\n</urlset>");
+    fs.writeFileSync(SITEMAP, sitemap);
+    console.log(`✓ sitemap.xml — added ${added} URLs`);
+  }
+}
 
 console.log(`\nDone. ${specs.length} new posts published.`);

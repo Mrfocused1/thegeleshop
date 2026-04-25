@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Page Not Found — The Gele Shop</title>
+<meta name="description" content="The page you were looking for is not here. Browse our journal, shop or contact The Gele Shop instead." />
+<meta name="robots" content="noindex, follow" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="styles.css" />
+
+<style>
+.notfound-stage {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 6%;
+  text-align: center;
+  background: #faf5ea;
+}
+.notfound-stage .inner { max-width: 640px; }
+.notfound-stage .num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(96px, 16vw, 180px);
+  font-weight: 500;
+  line-height: 1;
+  color: #b8944a;
+  margin: 0 0 8px;
+}
+.notfound-stage .eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  font-weight: 600;
+  color: #b8944a;
+  margin: 0 0 18px;
+}
+.notfound-stage h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: clamp(32px, 4.4vw, 52px);
+  line-height: 1.1;
+  margin: 0 0 18px;
+  color: #1a1a1a;
+}
+.notfound-stage h1 em { font-style: italic; color: #b8944a; }
+.notfound-stage p {
+  font-size: 17px;
+  line-height: 1.65;
+  color: #4a4a4a;
+  margin: 0 0 28px;
+}
+.notfound-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+}
+.notfound-actions a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  font-weight: 600;
+  color: #1a1a1a;
+  background: #fff;
+  border: 1px solid #1a1a1a;
+  text-decoration: none;
+  transition: background .2s ease, color .2s ease;
+}
+.notfound-actions a:hover { background: #1a1a1a; color: #fff; }
+.notfound-actions a.primary { background: #1a1a1a; color: #fff; }
+.notfound-actions a.primary:hover { background: #b8944a; border-color: #b8944a; }
+</style>
+</head>
+<body>
+
+<div class="announcement">CELEBRATING THE BEAUTY &amp; CRAFT OF AFRICAN ADORNMENT</div>
+
+<header class="header">
+  <button class="menu-btn" id="menu-open" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <a href="/index.html" class="logo">
+    <div class="logo-crown">
+      <svg viewBox="0 0 64 40" width="46" height="28" aria-hidden="true">
+        <path d="M4 34 L12 12 L20 26 L32 6 L44 26 L52 12 L60 34 Z M4 34 L60 34 L58 38 L6 38 Z"
+              fill="none" stroke="#b8944a" stroke-width="2" stroke-linejoin="round"/>
+        <circle cx="12" cy="10" r="2" fill="#b8944a"/>
+        <circle cx="32" cy="4" r="2.2" fill="#b8944a"/>
+        <circle cx="52" cy="10" r="2" fill="#b8944a"/>
+      </svg>
+    </div>
+    <div class="logo-text">THE GELE SHOP</div>
+    <div class="logo-sub">PAGE <span>NOT FOUND</span></div>
+  </a>
+  <div class="nav-right">
+    <button class="icon-btn" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+    <a href="/shop.html" class="icon-btn bag" aria-label="Shop"><i class="fa-solid fa-bag-shopping"></i><span class="bag-dot"></span></a>
+  </div>
+</header>
+
+<div class="drawer-overlay" id="drawer-overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Main navigation">
+  <div class="drawer-head">
+    <span class="drawer-eyebrow">MENU</span>
+    <button class="drawer-close" id="menu-close" aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <nav class="drawer-nav">
+    <a href="/index.html" class="drawer-link">Home</a>
+    <a href="/learn.html" class="drawer-link">Learn</a>
+    <a href="/index.html#styles" class="drawer-link">Styles &amp; Origins</a>
+    <a href="/index.html#culture" class="drawer-link">Cultural Significance</a>
+    <a href="/blog.html" class="drawer-link">Blog &amp; Stories</a>
+    <a href="/shop.html" class="drawer-link">Shop</a>
+    <a href="/contact.html" class="drawer-link">Contact</a>
+  </nav>
+</aside>
+
+<section class="notfound-stage">
+  <div class="inner">
+    <div class="num">404</div>
+    <p class="eyebrow">PAGE NOT FOUND</p>
+    <h1>This thread isn't <em>woven</em>.</h1>
+    <p>The page you were looking for has moved, been retired, or never lived here. The journal, the shop and the rest of the atelier are still where you left them.</p>
+    <div class="notfound-actions">
+      <a href="/" class="primary">RETURN HOME <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="/blog.html">VISIT THE JOURNAL <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="/shop.html">SHOP THE COLLECTION <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-col subscribe">
+      <h4>STAY IN THE STORY</h4>
+      <p>New essays, lookbooks and arrivals — sent gently and rarely.</p>
+      <form class="sub-form" onsubmit="event.preventDefault();">
+        <input type="email" placeholder="Enter your email address" />
+        <button type="submit">SUBSCRIBE</button>
+      </form>
+    </div>
+    <div class="footer-col">
+      <h5>EXPLORE</h5>
+      <ul>
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/learn.html">Learn</a></li>
+        <li><a href="/blog.html">Blog</a></li>
+        <li><a href="/shop.html">Shop</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>ABOUT</h5>
+      <ul>
+        <li><a href="/about.html">The Editor</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col footer-brand">
+      <div class="logo footer-logo">
+        <div class="logo-text">THE GELE SHOP</div>
+        <div class="logo-sub">THE <span>ART</span> OF THE GELE</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 THE GELE SHOP. ALL RIGHTS RESERVED.</span>
+  </div>
+</footer>
+
+<script src="menu.js" defer></script>
+</body>
+</html>

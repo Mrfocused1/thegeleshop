@@ -144,7 +144,21 @@ function slugify(s) {
 const slug = `${new Date().toISOString().slice(0, 10)}-${slugify(draft.title)}`;
 const postFilename = `${slug}.html`;
 const postPath = path.join(POSTS_DIR, postFilename);
-const heroImageHint = `${draft.tag.toLowerCase()} cover`;
+const today = new Date().toISOString().slice(0, 10);
+
+// Word count for schema
+const fullBodyHtml = `${draft.intro_html || ""}${draft.body_html || ""}${draft.closing_html || ""}`;
+const wordCount = (fullBodyHtml.replace(/<[^>]+>/g, " ").match(/\b\w+\b/g) || []).length;
+const articleSection = (draft.tag || "Weddings").charAt(0) + (draft.tag || "Weddings").slice(1).toLowerCase();
+
+// Hero image / OG image — fall back to brand image when no post hero is available
+const ogImage = next.hero_image
+  ? `https://www.thegele.shop/${next.hero_image}`
+  : "https://www.thegele.shop/hero-mannequin.webp";
+const hasHeroImage = !!next.hero_image;
+const heroSrc = hasHeroImage
+  ? next.hero_image.replace(/^posts\//, "")
+  : null;
 
 const postHtml = `<!DOCTYPE html>
 <html lang="en">
@@ -153,6 +167,70 @@ const postHtml = `<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>${escapeHtml(draft.title)} — The Gele Shop</title>
 <meta name="description" content="${escapeHtml(draft.deck)}" />
+<meta name="author" content="Adaeze Okonkwo, Editor — The Gele Shop" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<link rel="canonical" href="https://www.thegele.shop/posts/${slug}.html" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="The Gele Shop" />
+<meta property="og:title" content="${escapeHtml(draft.title)}" />
+<meta property="og:description" content="${escapeHtml(draft.deck)}" />
+<meta property="og:url" content="https://www.thegele.shop/posts/${slug}.html" />
+<meta property="og:image" content="${ogImage}" />
+<meta property="og:locale" content="en_GB" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="${escapeHtml(draft.title)}" />
+<meta name="twitter:description" content="${escapeHtml(draft.deck)}" />
+<meta name="twitter:image" content="${ogImage}" />
+
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": ${JSON.stringify(draft.title)},
+  "description": ${JSON.stringify(draft.deck)},
+  "image": "${ogImage}",
+  "datePublished": "${today}",
+  "dateModified": "${today}",
+  "wordCount": ${wordCount},
+  "articleSection": "${articleSection}",
+  "author": {
+    "@type": "Person",
+    "name": "Adaeze Okonkwo",
+    "jobTitle": "Editor",
+    "url": "https://www.thegele.shop/about.html",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "The Gele Shop",
+      "url": "https://www.thegele.shop/"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "The Gele Shop",
+    "logo": { "@type": "ImageObject", "url": "https://www.thegele.shop/favicon.svg" }
+  },
+  "mainEntityOfPage": "https://www.thegele.shop/posts/${slug}.html",
+  "inLanguage": "en-GB",
+  "isAccessibleForFree": true
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thegele.shop/" },
+    { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.thegele.shop/blog.html" },
+    { "@type": "ListItem", "position": 3, "name": ${JSON.stringify(draft.title)}, "item": "https://www.thegele.shop/posts/${slug}.html" }
+  ]
+}
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -196,9 +274,14 @@ const postHtml = `<!DOCTYPE html>
     <span class="blog-tag">${escapeHtml(draft.tag)}</span>
     <h1>${escapeHtml(draft.title)}</h1>
     <p class="post-deck">${escapeHtml(draft.deck)}</p>
-    <p class="post-meta">By The Gele Shop · ${formatDate(new Date())}</p>
+    <p class="post-meta">By <a href="/about.html" rel="author">Adaeze Okonkwo, Editor</a> · ${formatDate(new Date())}</p>
   </div>
-
+${hasHeroImage ? `
+  <figure class="post-hero">
+    <img src="${escapeHtml(heroSrc)}" alt="${escapeHtml(draft.title)} — ${escapeHtml(draft.deck)}" width="1080" height="1440" fetchpriority="high" decoding="async" />
+    <figcaption>Featured on <a href="https://www.instagram.com/${(next.photographer || "").replace(/^@/, "")}/" target="_blank" rel="noopener">${escapeHtml(next.photographer || "@bellanaijaweddings")}</a></figcaption>
+  </figure>
+` : ""}
   <div class="post-embed">
     <div class="post-embed-frame">
       <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="${escapeHtml(next.ig_url)}" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);">
@@ -214,6 +297,11 @@ const postHtml = `<!DOCTYPE html>
     ${draft.body_html}
     ${draft.closing_html}
   </div>
+
+  <aside class="post-related" aria-label="Continue reading">
+    <p class="post-related-eyebrow">CONTINUE READING</p>
+    <p class="post-related-pillar">For the deeper context, read our complete guide — <a href="../learn.html">What Is a Gele?</a> — or browse the <a href="../blog.html">full journal</a>.</p>
+  </aside>
 
   <p class="post-back"><a href="../blog.html" class="link-arrow"><i class="fa-solid fa-arrow-left"></i> Back to all stories</a></p>
 </article>
@@ -277,6 +365,20 @@ updatedBlog = updatedBlog.slice(0, insertAt) + newCard + updatedBlog.slice(inser
 
 fs.writeFileSync(BLOG_FILE, updatedBlog);
 console.log("Inserted article card into blog.html");
+
+// ---------- 4b. Append URL to sitemap.xml ----------
+
+const SITEMAP = path.join(ROOT, "sitemap.xml");
+if (fs.existsSync(SITEMAP)) {
+  let sitemap = fs.readFileSync(SITEMAP, "utf8");
+  const newUrl = `https://www.thegele.shop/posts/${postFilename}`;
+  if (!sitemap.includes(newUrl)) {
+    const entry = `  <url>\n    <loc>${newUrl}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>yearly</changefreq>\n    <priority>0.7</priority>\n  </url>\n</urlset>`;
+    sitemap = sitemap.replace("</urlset>", entry);
+    fs.writeFileSync(SITEMAP, sitemap);
+    console.log("Appended", newUrl, "to sitemap.xml");
+  }
+}
 
 // ---------- 5. Move from queue to published ----------
 
