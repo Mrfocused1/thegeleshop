@@ -28,3 +28,5 @@ preview-finder-*.png
 # Optional published-posts state — tracked locally, not in repo
 agent/published.json
 agent/agent.log
+agent/_state.json
+agent/candidates.json

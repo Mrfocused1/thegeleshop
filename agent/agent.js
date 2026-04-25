@@ -3,6 +3,7 @@
 // Anthropic API, generate a standalone post page that embeds the IG post with
 // full photographer credit, and add an article card to blog.html.
 
+import "dotenv/config";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";

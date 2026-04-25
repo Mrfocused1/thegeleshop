@@ -5,13 +5,19 @@ A daily agent that turns curated **Instagram features** (publicly posted Nigeria
 ## What it does, day to day
 
 ```
-queue.json          ──▶  agent.js (runs daily 09:00)  ──▶  posts/<slug>.html
-  │                       │                                blog.html (new card)
-  │                       │
-  └──────── add.js ◀──── you
+watchlist.json ──▶ discover.js ──▶ candidates.json ──▶ curate.js ──▶ queue.json ──▶ agent.js ──▶ posts/<slug>.html
+                   (Apify API)                       (you, ~30s)                  (Anthropic)    blog.html (new card)
 ```
 
-- **You** paste public IG post URLs into the queue (manually or via `add.js`), tagged with a topic hint and the photographer's handle.
+**Three scripts, three roles:**
+
+1. **`discover.js`** — runs daily, calls Apify Instagram Profile Scraper to fetch the latest posts from every account in `watchlist.json`, dedupes against state/queue/published, writes survivors to `candidates.json`. Cost: ~$0.013/day at default scale.
+
+2. **`curate.js`** — terminal-based interactive review. Walks you through `candidates.json` one post at a time. For each: shows photographer, posted date, like count, caption excerpt, thumbnail URL. You hit `q` to queue, `s` to skip, `t` to add a theme hint and queue, `x` to exit.
+
+3. **`agent.js`** — runs daily after curate, picks the oldest queued URL, drafts an original post via Claude Opus 4.7, generates the post page with IG embed + photographer credit, adds an article card to `blog.html`. Cost: ~$0.30/post.
+
+**Total cost at typical use:** discovery (~$0.40/month) + writing (~$9/month for daily posts) ≈ **$10/month for daily fresh content**.
 - **Once a day**, the agent picks the oldest queued URL and:
   1. Calls Claude Opus 4.7 (adaptive thinking, prompt caching on the brand-voice system prompt) to write **original** framing copy — title, tag, intro, body, closing — *without* describing the photo or naming people in it.
   2. Generates `posts/<date>-<slug>.html` containing the official Instagram `<blockquote>` embed with full photographer credit.
@@ -31,25 +37,45 @@ The Instagram image stays on Instagram's servers — we never download, scrape, 
 
 ```bash
 cd /Users/paulbridges/Desktop/zariya/agent
-npm install          # installs @anthropic-ai/sdk
-
-# Add your Anthropic API key to the shell that will run the agent
-echo 'export ANTHROPIC_API_KEY="sk-ant-..."' >> ~/.zshrc
-source ~/.zshrc
+npm install                      # @anthropic-ai/sdk + apify-client + dotenv
+cp .env.example .env             # then edit .env to add your two API keys
+chmod 600 .env                   # don't let other users on the machine read it
 ```
 
-## Adding posts to the queue
+`.env` should contain:
+```
+ANTHROPIC_API_KEY=sk-ant-...
+APIFY_API_TOKEN=apify_api_...
+```
+
+`.env` is gitignored — it never ships with the repo.
+
+## Daily workflow (~30 seconds of your time)
 
 ```bash
-# Easy way:
+node discover.js   # ~10s · pulls today's new IG posts from watchlist
+node curate.js     # ~30s · walks through candidates, you q/s/t each
+node agent.js      # ~30s · drafts the next queued post, publishes it
+```
+
+Or schedule them — `discover.js` and `agent.js` work unattended via launchd
+(see `com.thegeleshop.blog-agent.plist`); only `curate.js` needs you.
+
+## Manual queueing (no Apify needed)
+
+If you spot a great post yourself and want to skip discovery:
+
+```bash
 node add.js https://www.instagram.com/p/Cxxxxxxxxxxx/ \
   --photographer @bellanaijaweddings \
   --theme "Aso-ebi blue and what it says about a Yoruba wedding"
-
-# Or edit queue.json directly.
 ```
 
-The agent processes one queued entry per run (oldest first). To bulk-publish, run it multiple times in a row, or temporarily change the schedule.
+The agent processes one queued entry per run (oldest first). Run multiple times to bulk-publish.
+
+## Editing the watchlist
+
+Open `watchlist.json` and add/remove handles. `max_posts_per_run` controls cost; `max_age_days` filters out posts older than N days.
 
 ## Running it
 

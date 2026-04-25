@@ -1,0 +1,12 @@
+{
+  "comment": "Instagram accounts to monitor for new wedding/gele content. Edit anytime.",
+  "accounts": [
+    "bellanaijaweddings",
+    "nigerianwedding",
+    "loveweddingsng",
+    "weddingdigestnaija",
+    "munaluchibridal"
+  ],
+  "max_posts_per_run": 5,
+  "max_age_days": 14
+}

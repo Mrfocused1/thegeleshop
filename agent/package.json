@@ -6,9 +6,13 @@
   "description": "Daily agent that drafts original blog posts framing curated Instagram features.",
   "scripts": {
     "agent": "node agent.js",
-    "add": "node add.js"
+    "add": "node add.js",
+    "discover": "node discover.js",
+    "curate": "node curate.js"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.40.0"
+    "@anthropic-ai/sdk": "^0.40.0",
+    "apify-client": "^2.10.0",
+    "dotenv": "^16.4.5"
   }
 }
