@@ -204,6 +204,27 @@ if (classicSpecs.length) {
   blogHtml = blogHtml.slice(0, lineEnd) + classicCards + blogHtml.slice(lineEnd);
 }
 
+// Auto-update Featured Story hero with the most recent classic, if any
+const latestClassic = [...specs, ...published].find((p) => p.is_classic);
+if (latestClassic) {
+  const heroBlock = `<!-- Featured Story hero -->
+<section class="featured-hero" id="featured-hero">
+  <a href="posts/${latestClassic.slug}.html" class="featured-hero-img">
+    <img src="${latestClassic.hero_image}" alt="${escHtml(latestClassic.title)}" />
+  </a>
+  <div class="featured-hero-text">
+    <p class="eyebrow gold-eyebrow">FEATURED STORY · THE JOURNAL</p>
+    <span class="blog-tag classic-tag">CLASSIC · ${escHtml(latestClassic.tag)}</span>
+    <h1>${escHtml(latestClassic.title)}</h1>
+    <p class="featured-hero-deck">${escHtml(latestClassic.deck || "")}</p>
+    <p class="featured-hero-meta">By The Gele Shop · ${formatDate(new Date())} · 7 min read</p>
+    <a href="posts/${latestClassic.slug}.html" class="btn-primary">READ THE STORY <i class="fa-solid fa-arrow-right"></i></a>
+  </div>
+</section>`;
+  blogHtml = blogHtml.replace(/<!-- Featured Story hero -->[\s\S]*?<\/section>/, heroBlock);
+  console.log(`✓ Featured hero refreshed → ${latestClassic.title}`);
+}
+
 fs.writeFileSync(BLOG, blogHtml);
 console.log(`✓ blog.html — added ${latestSpecs.length} latest + ${classicSpecs.length} classic cards`);
 
@@ -215,6 +236,7 @@ for (const s of specs.slice().reverse()) {
     theme: s.theme || "",
     added_at: today,
     title: s.title,
+    deck: s.deck || "",
     tag: s.tag,
     is_classic: !!s.is_classic,
     slug: s.slug,
