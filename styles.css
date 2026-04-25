@@ -3155,3 +3155,42 @@ body.drawer-open { overflow: hidden; }
   .kp-region { padding: 24px 22px; }
   .hub-band { padding: 60px 5%; }
 }
+
+/* ========================================================
+   SHOP — made-to-order banner & order button
+   ======================================================== */
+.mto-banner {
+  background: #faf5ea;
+  border-top: 1px solid #eadfcb;
+  border-bottom: 1px solid #eadfcb;
+  padding: 14px 6%;
+  text-align: center;
+  font-size: 14px;
+  color: #4a463e;
+}
+.mto-banner p { margin: 0; }
+.mto-banner i { color: var(--gold); }
+.mto-banner strong { color: #1a1a1a; }
+
+.btn-order {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  padding: 12px 18px;
+  text-align: center;
+  background: #1a1a1a;
+  color: #fff;
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  font-weight: 600;
+  border-radius: 2px;
+  transition: background .2s ease;
+}
+.btn-order:hover { background: var(--gold); }
+.btn-order i {
+  margin-left: 8px;
+  font-size: 10px;
+  transition: transform .2s ease;
+}
+.btn-order:hover i { transform: translateX(4px); }

@@ -30,3 +30,10 @@ agent/published.json
 agent/agent.log
 agent/_state.json
 agent/candidates.json
+
+# Generated shipping labels (PDFs) — local only, contain customer addresses
+agent/labels/
+*.pdf
+
+# Order JSON files — local only
+agent/orders/
