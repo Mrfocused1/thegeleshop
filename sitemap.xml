@@ -1,147 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://www.thegele.shop/</loc>
-    <lastmod>2026-04-25</lastmod>
+    <loc>https://gele.app/</loc>
+    <lastmod>2026-04-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.thegele.shop/learn.html</loc>
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://www.thegele.shop/blog.html</loc>
-    <lastmod>2026-04-25</lastmod>
+    <loc>https://gele.app/blog.html</loc>
+    <lastmod>2026-04-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.thegele.shop/shop.html</loc>
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://www.thegele.shop/contact.html</loc>
-    <lastmod>2026-04-25</lastmod>
+    <loc>https://gele.app/contact.html</loc>
+    <lastmod>2026-04-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.thegele.shop/about.html</loc>
-    <lastmod>2026-04-25</lastmod>
+    <loc>https://gele.app/privacy.html</loc>
+    <lastmod>2026-04-27</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://www.thegele.shop/history.html</loc>
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://www.thegele.shop/styles.html</loc>
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://www.thegele.shop/traditions.html</loc>
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://www.thegele.shop/glossary.html</loc>
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.thegele.shop/posts/2026-04-25-the-doctor-in-blue-scrubs.html</loc>
-    <lastmod>2026-04-25</lastmod>
+    <loc>https://gele.app/terms.html</loc>
+    <lastmod>2026-04-27</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.thegele.shop/posts/2026-04-25-the-bride-as-art-director.html</loc>
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.thegele.shop/posts/2026-04-25-she-said-she-loves-his-last-name.html</loc>
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.thegele.shop/posts/2026-04-25-on-the-family-portrait.html</loc>
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.thegele.shop/posts/2026-04-25-the-father-and-son-getting-ready.html</loc>
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.thegele.shop/posts/2026-04-25-on-the-grammar-of-the-vow.html</loc>
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.thegele.shop/posts/2026-04-25-things-grooms-do-for-their-wives.html</loc>
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.thegele.shop/posts/2026-04-25-the-aso-oke-arrived.html</loc>
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.thegele.shop/posts/2026-04-25-the-bride-and-the-sultan.html</loc>
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.thegele.shop/posts/2026-04-25-cultural-elegance-meets-electric-chemistry.html</loc>
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.thegele.shop/posts/2026-04-25-on-the-first-look.html</loc>
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.thegele.shop/posts/2026-04-25-a-note-on-the-crying-groom.html</loc>
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.thegele.shop/posts/2026-04-25-the-civil-ceremony-loosens-its-tie.html</loc>
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.thegele.shop/posts/2026-04-25-the-nigerian-pre-wedding-shoot-as-its-own-art-form.html</loc>
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.4</priority>
   </url>
 </urlset>
